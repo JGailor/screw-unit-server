@@ -13,14 +13,14 @@
         return jQuery(this).parent('.describes').parent('.describe');
       },
       
-      run_befores: function() {
-        jQuery(this).fn('parent').fn('run_befores');
-        jQuery(this).children('.befores').children('.before').fn('run');
+      run_befores: function(name) {
+        jQuery(this).fn('parent').fn('run_befores', name);
+        jQuery(this).children('.befores').children('.before').fn('run', name);
       },
       
-      run_afters: function() {
-        jQuery(this).fn('parent').fn('run_afters');
-        jQuery(this).children('.afters').children('.after').fn('run');
+      run_afters: function(name) {
+        jQuery(this).fn('parent').fn('run_afters', name);
+        jQuery(this).children('.afters').children('.after').fn('run', name);
       },
       
       enqueue: function() {
@@ -44,12 +44,13 @@
       },
       
       run: function() {
+				var name = jQuery(this).find("h2").text();
         try {
           try {
-            jQuery(this).fn('parent').fn('run_befores');
+            jQuery(this).fn('parent').fn('run_befores', name);
             jQuery(this).data('screwunit.run')();
           } finally {
-            jQuery(this).fn('parent').fn('run_afters');
+            jQuery(this).fn('parent').fn('run_afters', name);
           }
           jQuery(this).trigger('passed');
         } catch(e) {
@@ -73,11 +74,11 @@
     });
     
     jQuery('.before').fn({
-      run: function() { jQuery(this).data('screwunit.run')() }
+      run: function(name) { jQuery(this).data('screwunit.run')(name) }
     }); 
   
     jQuery('.after').fn({
-      run: function() { jQuery(this).data('screwunit.run')() }
+      run: function(name) { jQuery(this).data('screwunit.run')(name) }
     });
 
     jQuery(Screw).trigger('before');
