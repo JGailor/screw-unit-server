@@ -1,9 +1,9 @@
-(function($) {
+(function(jQuery) {
 
   function print_array(obj, opts) {
     var result = [];
     for (var i = 0; i < Math.min(opts.max_array, obj.length); i++)
-      result.push($.print(obj[i], $.extend({}, opts, { max_array: 3, max_string: 40 })));
+      result.push(jQuery.print(obj[i], jQuery.extend({}, opts, { max_array: 3, max_string: 40 })));
 
     if (obj.length > opts.max_array)
       result.push((obj.length - opts.max_array) + ' more...');
@@ -24,9 +24,9 @@
         'img': ['src']
       };
 
-      $.each(properties.concat(extra[obj.tagName.toLowerCase()] || []), function(){
+      jQuery.each(properties.concat(extra[obj.tagName.toLowerCase()] || []), function(){
         if (obj[this])
-          result.push(' ' + this.replace('className', 'class') + "=" + $.print(obj[this]))
+          result.push(' ' + this.replace('className', 'class') + "=" + jQuery.print(obj[this]))
       });
       return "<" + obj.tagName.toLowerCase()
               + result.join('') + ">";
@@ -38,9 +38,9 @@
 
     var result = [], key, value;
     for (var k in obj) {
-      if (obj.hasOwnProperty(k) && $.inArray(obj[k], seen) < 0) {
+      if (obj.hasOwnProperty(k) && jQuery.inArray(obj[k], seen) < 0) {
         seen.push(obj[k]);
-        value = $.print(obj[k], $.extend({}, opts, { max_array: 6, max_string: 40, seen: seen }));
+        value = jQuery.print(obj[k], jQuery.extend({}, opts, { max_array: 6, max_string: 40, seen: seen }));
       } else
         value = "...";
       result.push(k + ": " + value);
@@ -75,8 +75,8 @@
       return str;
   }
 
-  $.print = function(obj, options) {
-    var opts = $.extend({}, { max_array: 10, max_string: 100 }, options);
+  jQuery.print = function(obj, options) {
+    var opts = jQuery.extend({}, { max_array: 10, max_string: 100 }, options);
 
     if (typeof obj == 'undefined')
       return "undefined";
@@ -97,9 +97,9 @@
     else if (obj.nodeType)
       return print_element(obj);
     else if (obj instanceof jQuery)
-      return "$(" + $.print(obj.get()) + ")";
+      return "jQuery(" + jQuery.print(obj.get()) + ")";
     else if (obj instanceof Error)
-      return print_object(obj, $.extend({}, options, { max_string: 200 }));
+      return print_object(obj, jQuery.extend({}, options, { max_string: 200 }));
     else if (obj instanceof Object)
       return print_object(obj, opts);
     else

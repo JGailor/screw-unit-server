@@ -1,4 +1,4 @@
-var Screw = (function($) {
+var Screw = (function(jQuery) {
   var screw = {
     Unit: function(fn) {
       var contents = fn.toString().match(/^[^\{]*{((.*\n*)*)}/m)[1];
@@ -6,11 +6,11 @@ var Screw = (function($) {
         "with (specifications) { with (matchers) { " + contents + " } }"
       );
 
-      $(Screw).queue(function() {
-        Screw.Specifications.context.push($('body > .describe'));
+      jQuery(Screw).queue(function() {
+        Screw.Specifications.context.push(jQuery('body > .describe'));
         fn.call(this, Screw.Matchers, Screw.Specifications);
         Screw.Specifications.context.pop();
-        $(this).dequeue();
+        jQuery(this).dequeue();
       });
     },
 
@@ -18,12 +18,12 @@ var Screw = (function($) {
       context: [],
 
       describe: function(name, fn) {
-        var describe = $('<li class="describe">')
-          .append($('<h1>').text(name))
-          .append('<ol class="befores">')
-          .append('<ul class="its">')
-          .append('<ul class="describes">')
-          .append('<ol class="afters">');
+        var describe = jQuery('<li class="describe" />')
+          .append(jQuery('<h1 />').text(name))
+          .append('<ol class="befores" />')
+          .append('<ul class="its" />')
+          .append('<ul class="describes" />')
+          .append('<ol class="afters" />');
 
         this.context.push(describe);
         fn.call();
@@ -35,8 +35,8 @@ var Screw = (function($) {
       },
 
       it: function(name, fn) {
-        var it = $('<li class="it">')
-          .append($('<h2>').text(name))
+        var it = jQuery('<li class="it" />')
+          .append(jQuery('<h2 />').text(name))
           .data('screwunit.run', fn);
 
         this.context[this.context.length-1]
@@ -45,7 +45,7 @@ var Screw = (function($) {
       },
 
       before: function(fn) {
-        var before = $('<li class="before">')
+        var before = jQuery('<li class="before" />')
           .data('screwunit.run', fn);
 
         this.context[this.context.length-1]
@@ -54,7 +54,7 @@ var Screw = (function($) {
       },
 
       after: function(fn) {
-        var after = $('<li class="after">')
+        var after = jQuery('<li class="after" />')
           .data('screwunit.run', fn);
 
         this.context[this.context.length-1]
@@ -64,17 +64,17 @@ var Screw = (function($) {
     }
   };
 
-  $(screw).queue(function() { $(screw).trigger('loading') });
-  $(function() {
-    $('<div class="describe">')
-      .append('<h3 class="status">')
-      .append('<ol class="befores">')
-      .append('<ul class="describes">')
-      .append('<ol class="afters">')
+  jQuery(screw).queue(function() { jQuery(screw).trigger('loading') });
+  jQuery(function() {
+    jQuery('<div class="describe" />')
+      .append('<h3 class="status" />')
+      .append('<ol class="befores" />')
+      .append('<ul class="describes" />')
+      .append('<ol class="afters" />')
       .appendTo('body');
 
-    $(screw).dequeue();
-    $(screw).trigger('loaded');
+    jQuery(screw).dequeue();
+    jQuery(screw).trigger('loaded');
   });
   return screw;
 })(jQuery);

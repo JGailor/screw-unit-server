@@ -1,91 +1,91 @@
-(function($) {
-  $(Screw).bind('loaded', function() {
-    $('.status').fn({
+(function(jQuery) {
+  jQuery(Screw).bind('loaded', function() {
+    jQuery('.status').fn({
       display: function() {
-        $(this).text(
-          $('.passed').length + $('.failed').length + ' test(s), ' + $('.failed').length + ' failure(s)'
+        jQuery(this).text(
+          jQuery('.passed').length + jQuery('.failed').length + ' test(s), ' + jQuery('.failed').length + ' failure(s)'
         );
       }
     });
 
-    $('.describe').fn({
+    jQuery('.describe').fn({
       parent: function() {
-        return $(this).parent('.describes').parent('.describe');
+        return jQuery(this).parent('.describes').parent('.describe');
       },
       
       run_befores: function() {
-        $(this).fn('parent').fn('run_befores');
-        $(this).children('.befores').children('.before').fn('run');
+        jQuery(this).fn('parent').fn('run_befores');
+        jQuery(this).children('.befores').children('.before').fn('run');
       },
       
       run_afters: function() {
-        $(this).fn('parent').fn('run_afters');
-        $(this).children('.afters').children('.after').fn('run');
+        jQuery(this).fn('parent').fn('run_afters');
+        jQuery(this).children('.afters').children('.after').fn('run');
       },
       
       enqueue: function() {
-        $(this).children('.its').children('.it').fn('enqueue');
-        $(this).children('.describes').children('.describe').fn('enqueue');
+        jQuery(this).children('.its').children('.it').fn('enqueue');
+        jQuery(this).children('.describes').children('.describe').fn('enqueue');
       },
       
       selector: function() {
-        return $(this).fn('parent').fn('selector')
-          + ' > .describes > .describe:eq(' + $(this).parent('.describes').children('.describe').index(this) + ')';
+        return jQuery(this).fn('parent').fn('selector')
+          + ' > .describes > .describe:eq(' + jQuery(this).parent('.describes').children('.describe').index(this) + ')';
       }
     });
   
-    $('body > .describe').fn({
+    jQuery('body > .describe').fn({
       selector: function() { return 'body > .describe' }
     });
     
-    $('.it').fn({
+    jQuery('.it').fn({
       parent: function() {
-        return $(this).parent('.its').parent('.describe');
+        return jQuery(this).parent('.its').parent('.describe');
       },
       
       run: function() {
         try {
           try {
-            $(this).fn('parent').fn('run_befores');
-            $(this).data('screwunit.run')();
+            jQuery(this).fn('parent').fn('run_befores');
+            jQuery(this).data('screwunit.run')();
           } finally {
-            $(this).fn('parent').fn('run_afters');
+            jQuery(this).fn('parent').fn('run_afters');
           }
-          $(this).trigger('passed');
+          jQuery(this).trigger('passed');
         } catch(e) {
-          $(this).trigger('failed', [e]);
+          jQuery(this).trigger('failed', [e]);
         }
       },
       
       enqueue: function() {
-        var self = $(this).trigger('enqueued');
-        $(Screw)
+        var self = jQuery(this).trigger('enqueued');
+        jQuery(Screw)
           .queue(function() {
             self.fn('run');
-            setTimeout(function() { $(Screw).dequeue() }, 0);
+            setTimeout(function() { jQuery(Screw).dequeue() }, 0);
           });
       },
       
       selector: function() {
-        return $(this).fn('parent').fn('selector')
-          + ' > .its > .it:eq(' + $(this).parent('.its').children('.it').index(this) + ')';
+        return jQuery(this).fn('parent').fn('selector')
+          + ' > .its > .it:eq(' + jQuery(this).parent('.its').children('.it').index(this) + ')';
       }
     });
     
-    $('.before').fn({
-      run: function() { $(this).data('screwunit.run')() }
+    jQuery('.before').fn({
+      run: function() { jQuery(this).data('screwunit.run')() }
     }); 
   
-    $('.after').fn({
-      run: function() { $(this).data('screwunit.run')() }
+    jQuery('.after').fn({
+      run: function() { jQuery(this).data('screwunit.run')() }
     });
 
-    $(Screw).trigger('before');
+    jQuery(Screw).trigger('before');
     var to_run = unescape(location.search.slice(1)) || 'body > .describe > .describes > .describe';
-    $(to_run)
+    jQuery(to_run)
       .focus()
       .eq(0).trigger('scroll').end()
       .fn('enqueue');
-    $(Screw).queue(function() { $(Screw).trigger('after') });
+    jQuery(Screw).queue(function() { jQuery(Screw).trigger('after') });
   })
 })(jQuery);

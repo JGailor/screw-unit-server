@@ -1,11 +1,11 @@
-(function($) {
-  $.fn.fn = function() {
+jQuery(function(jQuery) {
+  jQuery.fn.fn = function() {
     var self = this;
     var extension = arguments[0], name = arguments[0];
     if (typeof name == "string") {
-      return apply(self, name, $.makeArray(arguments).slice(1, arguments.length));
+      return apply(self, name, jQuery.makeArray(arguments).slice(1, arguments.length));
     } else {
-      $.each(extension, function(key, value) {
+      jQuery.each(extension, function(key, value) {
         define(self, key, value);
       });
       return self;
@@ -17,7 +17,7 @@
   function apply(self, name, args) {
     var result;
     self.each(function(i, item) {
-      var fn = $(item).data(namespacedName(name));
+      var fn = jQuery(item).data(namespacedName(name));
       if (fn) result = fn.apply(item, args)
       else throw(name + " is not defined");
     });
