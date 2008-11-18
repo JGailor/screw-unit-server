@@ -1,4 +1,6 @@
 (function(jQuery) {
+	var focused = location.search.slice(1) != "";
+	
   jQuery(Screw).bind('loaded', function() {
     jQuery('.status').fn({
       display: function() {
@@ -17,9 +19,10 @@
 				return jQuery(this).find(".it.passed").length;
 			},
 			
-			run_cleanup: function() {			
-				if(jQuery(this).fn("total_children")  == jQuery(this).fn("total_passed")) {
+			run_cleanup: function() {
+				if(!focused && (jQuery(this).fn("total_children")  == jQuery(this).fn("total_passed"))) {
 					jQuery(this).children(".its").hide();
+					jQuery(this).children(".describes").hide();
 				}
 			}			
 		});
