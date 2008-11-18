@@ -8,6 +8,22 @@
       }
     });
 
+		jQuery('body > .describe > .describes > .describe').fn({
+			total_children: function() {
+				return jQuery(this).find(".it").length;
+			},
+			
+			total_passed: function() {
+				return jQuery(this).find(".it.passed").length;
+			},
+			
+			run_cleanup: function() {			
+				if(jQuery(this).fn("total_children")  == jQuery(this).fn("total_passed")) {
+					jQuery(this).children(".its").hide();
+				}
+			}			
+		});
+
     jQuery('.describe').fn({
       parent: function() {
         return jQuery(this).parent('.describes').parent('.describe');
@@ -56,6 +72,8 @@
         } catch(e) {
           jQuery(this).trigger('failed', [e]);
         }
+
+				jQuery(this).parents('.focused').fn('run_cleanup');
       },
       
       enqueue: function() {

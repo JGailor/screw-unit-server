@@ -1,4 +1,4 @@
-jQuery(function(jQuery) {
+(function(jQuery) {
   jQuery.fn.fn = function() {
     var self = this;
     var extension = arguments[0], name = arguments[0];
